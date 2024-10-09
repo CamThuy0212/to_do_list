@@ -1,9 +1,18 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
 class CardBody extends StatelessWidget {
-  CardBody({super.key, required this.item});
+  CardBody({
+    super.key,
+    required this.item,
+    required this.handleDelete,
+    required this.index,
+  });
 
   var item;
+  var index;
+  final Function handleDelete;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +20,7 @@ class CardBody extends StatelessWidget {
       height: 70,
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-          color: const Color(0xffdfdfdf),
+          color: (index % 2 == 0) ? const Color(0xffdfdfdf) : Colors.yellow,
           borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -26,10 +35,18 @@ class CardBody extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Icon(
-              Icons.delete_outline,
-              color: Color(0xff4b4b4b),
-              size: 30,
+            InkWell(
+              onTap: () async {
+                if (await confirm(context)) {
+                  handleDelete(item.id);
+                }
+                return;
+              },
+              child: const Icon(
+                Icons.delete_outline,
+                color: Color(0xff4b4b4b),
+                size: 30,
+              ),
             ),
           ],
         ),

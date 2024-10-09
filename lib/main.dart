@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'modal/items.dart';
@@ -10,23 +12,36 @@ void main() {
     theme: ThemeData(
       primaryColor: Colors.blue,
     ),
-    home: MyApp(),
+    home: const MyApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  final List<DataItems> items = [
-    DataItems(id: "1", name: "Tập thể dục"),
-    DataItems(id: "2", name: "Tập thể dục 2"),
-    DataItems(id: "3", name: "Tập thể dục 3"),
-    DataItems(id: "4", name: "Tập thể dục 4"),
-    // DataItems(id: "5", name: "Tập thể dục 5"),
-  ];
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final List<DataItems> items = [];
+
+  void _handleAddTask(String name) {
+    final newItem = DataItems(id: DateTime.now().toString(), name: name);
+    setState(() {
+      items.add(newItem);
+    });
+  }
+
+  void _handleDeleteTask(String id) {
+    setState(() {
+      items.removeWhere((item) => item.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild");
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -42,7 +57,13 @@ class MyApp extends StatelessWidget {
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
-            children: items.map((item) => CardBody(item: item)).toList(),
+            children: items
+                .map((item) => CardBody(
+                      index: items.indexOf(item),
+                      item: item,
+                      handleDelete: _handleDeleteTask,
+                    ))
+                .toList(),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -54,7 +75,7 @@ class MyApp extends StatelessWidget {
                 isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return ModalBottom();
+                  return ModalBottom(addTask: _handleAddTask);
                 });
           },
           // backgroundColor: Colors.blue,

@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 class ModalBottom extends StatelessWidget {
   ModalBottom({
     super.key,
+    required this.addTask,
   });
+
+  final Function addTask;
 
   TextEditingController controller = TextEditingController();
 
-  void _handleOnclick() {
-    print(controller.text);
+  void _handleOnclick(context) {
+    final name = controller.text;
+    if (name.isEmpty) {
+      return;
+    }
+    addTask(name);
+    Navigator.pop(context);
   }
 
   @override
@@ -38,7 +46,7 @@ class ModalBottom extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: _handleOnclick,
+                onPressed: () => _handleOnclick(context),
                 child: const Text("Add task"),
               ),
             ),
