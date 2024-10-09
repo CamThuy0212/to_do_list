@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 
+import 'modal/items.dart';
 import 'widget/cart_body_widget.dart';
+import 'widget/cart_modal_bottom.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primaryColor: Colors.blue,
+    ),
     home: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final List<DataItems> items = [
+    DataItems(id: "1", name: "Tập thể dục"),
+    DataItems(id: "2", name: "Tập thể dục 2"),
+    DataItems(id: "3", name: "Tập thể dục 3"),
+    DataItems(id: "4", name: "Tập thể dục 4"),
+    // DataItems(id: "5", name: "Tập thể dục 5"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +39,10 @@ class MyApp extends StatelessWidget {
           ),
           // backgroundColor: Colors.blue,
         ),
-        body: const SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
-            children: [
-              CardBody(),
-              CardBody(),
-            ],
+            children: items.map((item) => CardBody(item: item)).toList(),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -44,42 +54,7 @@ class MyApp extends StatelessWidget {
                 isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return Padding(
-                    padding: MediaQuery.of(context).viewInsets,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      // color: Colors.amber,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: "Your task"),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text("Add task"),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return ModalBottom();
                 });
           },
           // backgroundColor: Colors.blue,

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CardBody extends StatelessWidget {
-  const CardBody({
-    super.key,
-  });
+  CardBody({super.key, required this.item});
 
+  var item;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,20 +13,20 @@ class CardBody extends StatelessWidget {
       decoration: BoxDecoration(
           color: const Color(0xffdfdfdf),
           borderRadius: BorderRadius.circular(12)),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Tập thể dục sáng",
-              style: TextStyle(
+              item.name,
+              style: const TextStyle(
                 color: Color(0xff4b4b4b),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Icon(
+            const Icon(
               Icons.delete_outline,
               color: Color(0xff4b4b4b),
               size: 30,
